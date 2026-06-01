@@ -1,0 +1,32 @@
+@import "tailwindcss";
+
+.featuredSwiper {
+  padding: 20px 0 50px;
+}
+
+.featuredSwiper .swiper-wrapper {
+  align-items: center;
+}
+
+.featuredSwiper .swiper-slide {
+  transform: scale(0.88);
+  opacity: 0.65;
+  transition: all 0.5s ease;
+}
+
+.featuredSwiper .swiper-slide-active {
+  transform: scale(1.05);
+  opacity: 1;
+}
+
+.project-card {
+  transition: all 0.5s ease;
+}
+
+.featuredSwiper .swiper-slide-active .project-card {
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+}
+
+.project-card:hover {
+  transform: translateY(-5px);
+}
