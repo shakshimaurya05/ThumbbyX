@@ -7,7 +7,7 @@ import FeaturedContractors from "../components/home/FeaturedContractors";
 import Services from "../components/home/Services";
 import TalkToExpert from "../components/home/TalkToExpert";
 import Footer from "../components/layout/Footer";
-import Faq from "../components/home/Faq";
+import Faq from "../components/home/faq";
 import CostEstimator from "../components/home/estimate";
 const HomePage = () => {
   return (

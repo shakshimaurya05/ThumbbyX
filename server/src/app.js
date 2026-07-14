@@ -8,7 +8,7 @@ import adminRoutes from "./routes/adminRoutes.js";
 import leadRoutes
 from "./routes/leadRoutes.js";
 import projectRoutes
-from "./routes/projectRoutes.js";
+from "./routes/ProjectRoutes.js";
 import inquiryRoutes from "./routes/inquiryRoutes.js";
 import reviewRoutes from "./routes/reviewRoutes.js";
 import showcaseProjectRoutes from "./routes/showcaseProjectRoutes.js";

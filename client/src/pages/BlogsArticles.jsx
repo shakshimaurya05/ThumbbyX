@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 
 import Navbar from "../components/layout/Navbar";
 import Footer from "../components/layout/Footer";
-import BlogDetail from "../components/blog/BlogDetail"; 
+import BlogDetail from "../components/blog/blogDetail"; 
 import { blogs } from "../components/blog/blogData";     
 
 import blogHero from "../assets/why1.png";
