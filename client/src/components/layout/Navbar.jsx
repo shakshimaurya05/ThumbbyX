@@ -4,7 +4,6 @@ import {
   useNavigate,
 } from "react-router-dom";
 import { toast } from "react-toastify";
-import { useEffect, useState } from "react";
 import {
   ArrowRight,
   ChevronDown,
@@ -19,6 +18,8 @@ import {
 } from "lucide-react";
 import logo from "../../assets/ThumbbyX Logo.png";
 import dropdownImage from "../../assets/dream.png";
+import { useAuth } from "../../contexts/AuthContext";
+import { dashboardPathForRole } from "../../utils/roles";
 
 const featuredMenu = {
   badge: "Featured",
@@ -135,60 +136,17 @@ const MegaMenuButton = ({ icon: Icon, label, sub, onClick }) => {
 
 const Navbar = () => {
   const navigate = useNavigate();
-  const [user, setUser] =
-  useState(null);
-const [isLoggedIn, setIsLoggedIn] =
-  useState(false);
-
-useEffect(() => {
-  const token =
-    localStorage.getItem(
-      "accessToken"
-    );
-
-  const savedUser =
-    localStorage.getItem(
-      "user"
-    );
-
-  setIsLoggedIn(!!token);
-
-  if (savedUser) {
-    setUser(
-      JSON.parse(savedUser)
-    );
-  }
-}, []);
+  const { user, clearSession } = useAuth();
+  const isLoggedIn = Boolean(user);
 
 const handleLogout = () => {
-  localStorage.removeItem(
-    "accessToken"
-  );
-
-  setIsLoggedIn(false);
+  clearSession();
   toast.success("Logged out successfully");
   navigate("/login");
 };
 
 const handleDashboard = () => {
-  if (
-    user?.role ===
-    "contractor"
-  ) {
-    navigate(
-      "/contractor/dashboard"
-    );
-  } else if (
-    user?.role === "admin"
-  ) {
-    navigate(
-      "/admin/dashboard"
-    );
-  } else {
-    navigate(
-      "/customer/dashboard"
-    );
-  }
+  navigate(dashboardPathForRole(user?.role));
 };
 
   return (

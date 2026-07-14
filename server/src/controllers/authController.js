@@ -484,6 +484,13 @@ export const refreshAccessToken =
         });
       }
 
+      if (!user.isActive) {
+        return res.status(403).json({
+          success: false,
+          message: "Account is disabled",
+        });
+      }
+
       if (
         user.refreshToken !==
         refreshToken

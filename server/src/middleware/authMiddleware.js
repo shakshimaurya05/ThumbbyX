@@ -45,6 +45,13 @@ export const protect = async (
       });
     }
 
+    if (!user.isActive) {
+      return res.status(403).json({
+        success: false,
+        message: "Account is disabled",
+      });
+    }
+
     req.user = user;
 
     next();

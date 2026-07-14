@@ -6,6 +6,7 @@ import Navbar from "../components/layout/Navbar";
 import Footer from "../components/layout/Footer";
 import happyFamily from "../assets/happy-family.png";
 import { API_BASE_URL } from "../services/api";
+import { isAdminRole } from "../utils/roles";
 
 const API_BASE = API_BASE_URL + "/reviews";
 
@@ -18,7 +19,7 @@ export default function Reviews() {
   const [isLoading, setIsLoading] = useState(true);
 
   const storedUser = JSON.parse(localStorage.getItem("user") || "null");
-  const isAdmin = storedUser?.role === "admin";
+  const isAdmin = isAdminRole(storedUser?.role);
   const token = localStorage.getItem("accessToken");
 
   useEffect(() => {

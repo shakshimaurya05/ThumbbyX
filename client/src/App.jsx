@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Navigate, Routes, Route } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Home from "./pages/HomePage";
@@ -57,6 +57,26 @@ import EditProfile from "./pages/contractor/EditProfile";
 import ShowcaseProjectsPage from "./pages/admin/ShowcaseProjectsPage";
 import AdminManagementPage from "./pages/admin/AdminManagementPage";
 import ActivityLogsPage from "./pages/admin/ActivityLogsPage";
+import { useAuth } from "./contexts/AuthContext";
+import { dashboardPathForRole, isAdminRole, isSuperAdmin } from "./utils/roles";
+
+function RoleRoute({ hasAccess, children }) {
+  const { user, isLoading } = useAuth();
+
+  if (isLoading) return null;
+  if (!user) return <Navigate to="/login" replace />;
+  if (!hasAccess(user.role)) {
+    return <Navigate to={dashboardPathForRole(user.role)} replace />;
+  }
+
+  return children;
+}
+
+const AdminRoute = ({ children }) => <RoleRoute hasAccess={isAdminRole}>{children}</RoleRoute>;
+const SuperAdminRoute = ({ children }) => <RoleRoute hasAccess={isSuperAdmin}>{children}</RoleRoute>;
+const CustomerRoute = ({ children }) => <RoleRoute hasAccess={(role) => role === "customer"}>{children}</RoleRoute>;
+const ContractorRoute = ({ children }) => <RoleRoute hasAccess={(role) => role === "contractor"}>{children}</RoleRoute>;
+
 function App() {
   useEffect(() => {
     const originalAlert = window.alert;
@@ -113,37 +133,33 @@ function App() {
         />
         <Route
           path="/contractor/dashboard"
-          element={<ContractorDashboard />}
+          element={<ContractorRoute><ContractorDashboard /></ContractorRoute>}
         />
 
-     <Route path="/contractor/edit-profile" element={<EditProfile />} />
+     <Route path="/contractor/edit-profile" element={<ContractorRoute><EditProfile /></ContractorRoute>} />
 
         <Route
           path="/admin/dashboard"
-          element={<AdminDashboard />}
-        />
-        <Route
-  path="/admin/dashboard"
-  element={<AdminDashboard />}
+          element={<AdminRoute><AdminDashboard /></AdminRoute>}
 />
 <Route
   path="/admin/video-reviews"
-  element={<VideoReviewsPage />}
+  element={<AdminRoute><VideoReviewsPage /></AdminRoute>}
 />
 <Route
   path="/admin/contractors"
-  element={<ContractorsPage />}
+  element={<AdminRoute><ContractorsPage /></AdminRoute>}
 />
 <Route
   path="/contractor/project/:id"
   element={
-    <ContractorProjectDetailsPage />
+    <ContractorRoute><ContractorProjectDetailsPage /></ContractorRoute>
   }
 />
 <Route
   path="/admin/contractors/:id"
   element={
-    <ContractorDetailsPage />
+    <AdminRoute><ContractorDetailsPage /></AdminRoute>
   }
 />
 <Route
@@ -154,59 +170,67 @@ function App() {
 />
 <Route
   path="/admin/leads"
-  element={<LeadsPage />}
+  element={<AdminRoute><LeadsPage /></AdminRoute>}
 />
 <Route
   path="/contractor/my-leads"
-  element={<MyLeadsPage />}
+  element={<ContractorRoute><MyLeadsPage /></ContractorRoute>}
 />
 <Route
   path="/admin/projects"
-  element={<ProjectsPage />}
+  element={<AdminRoute><ProjectsPage /></AdminRoute>}
 />
 <Route
   path="/admin/projects/:id"
-  element={<ProjectDetailsPage />}
+  element={<AdminRoute><ProjectDetailsPage /></AdminRoute>}
 />
 <Route
   path="/admin/add-projects"
-  element={<ShowcaseProjectsPage />}
+  element={<AdminRoute><ShowcaseProjectsPage /></AdminRoute>}
 />
 <Route
   path="/admin/admin-management"
-  element={<AdminManagementPage />}
+  element={
+    <SuperAdminRoute>
+      <AdminManagementPage />
+    </SuperAdminRoute>
+  }
 />
 <Route
   path="/admin/activity-logs"
-  element={<ActivityLogsPage />}
+  element={
+    <SuperAdminRoute>
+      <ActivityLogsPage />
+    </SuperAdminRoute>
+  }
 />
 <Route
   path="/admin/inquiries"
-  element={<InquiriesPage />}
+  element={<AdminRoute><InquiriesPage /></AdminRoute>}
 />
 <Route
   path="/contractor/my-projects"
-  element={<MyProjectsPage />}
+  element={<ContractorRoute><MyProjectsPage /></ContractorRoute>}
 />
 <Route
   path="/customer/dashboard"
-  element={<CustomerDashboard />}
+  element={<CustomerRoute><CustomerDashboard /></CustomerRoute>}
 />
 <Route
   path="/customer/my-projects"
-  element={<MyProjectsPages />}
+  element={<CustomerRoute><MyProjectsPages /></CustomerRoute>}
 />
 <Route
   path="/customer/project/:id"
   element={
-    <CustomerProjectDetailsPage />
+    <CustomerRoute><CustomerProjectDetailsPage /></CustomerRoute>
   }
 />
-<Route path="/customer/payments" element={<PaymentProjects />} />
-   <Route path="/customer/paymentDashboard/:id" element={<PaymentDashboard />} />
-<Route path="/admin/payments" element={<AdminPaymentsPage />} />
+<Route path="/customer/payments" element={<CustomerRoute><PaymentProjects /></CustomerRoute>} />
+   <Route path="/customer/paymentDashboard/:id" element={<CustomerRoute><PaymentDashboard /></CustomerRoute>} />
+<Route path="/admin/payments" element={<AdminRoute><AdminPaymentsPage /></AdminRoute>} />
 
-<Route path="/contractor/earnings" element={<ContractorEarningsPage />} />
+<Route path="/contractor/earnings" element={<ContractorRoute><ContractorEarningsPage /></ContractorRoute>} />
       </Routes>
 
     </BrowserRouter>

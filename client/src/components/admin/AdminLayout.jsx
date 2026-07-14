@@ -1,5 +1,7 @@
 import { Link, useLocation } from "react-router-dom";
 import { LayoutDashboard, Target, HardHat, Building2, CreditCard, Video, MessageSquare, Home, ArrowRight, FolderPlus, ShieldCheck, ClipboardList } from "lucide-react";
+import { useAuth } from "../../contexts/AuthContext";
+import { isSuperAdmin } from "../../utils/roles";
 
 const NAV = [
   { label: "Dashboard",    icon: LayoutDashboard, to: "/admin/dashboard" },
@@ -19,8 +21,8 @@ const SUPER_ADMIN_NAV = [
 
 export default function AdminLayout({ children }) {
   const location = useLocation();
-  const user = JSON.parse(localStorage.getItem("user") || "{}");
-  const navItems = user.role === "super_admin"
+  const { user } = useAuth();
+  const navItems = isSuperAdmin(user?.role)
     ? [...NAV, ...SUPER_ADMIN_NAV]
     : NAV;
 
@@ -107,7 +109,7 @@ export default function AdminLayout({ children }) {
             }}>A</div>
             <div>
               <div style={{ fontSize: 12, fontWeight: 700, color: "#fff" }}>Admin</div>
-              <div style={{ fontSize: 11, color: "rgba(255,255,255,0.4)" }}>{user.role === "super_admin" ? "Super Admin" : "Admin"}</div>
+              <div style={{ fontSize: 11, color: "rgba(255,255,255,0.4)" }}>{isSuperAdmin(user?.role) ? "Super Admin" : "Admin"}</div>
             </div>
           </div>
         </div>
@@ -128,7 +130,7 @@ export default function AdminLayout({ children }) {
             <span style={{ color: "#5B4FCF", fontWeight: 600 }}>Admin Console</span>
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-            <div style={{ fontSize: 11, background: "#F0EEFF", color: "#5B4FCF", border: "1px solid #C4BEFF", padding: "5px 14px", borderRadius: 20, fontWeight: 700 }}>{user.role === "super_admin" ? "Super Admin" : "Admin"}</div>
+            <div style={{ fontSize: 11, background: "#F0EEFF", color: "#5B4FCF", border: "1px solid #C4BEFF", padding: "5px 14px", borderRadius: 20, fontWeight: 700 }}>{isSuperAdmin(user?.role) ? "Super Admin" : "Admin"}</div>
           </div>
         </div>
 

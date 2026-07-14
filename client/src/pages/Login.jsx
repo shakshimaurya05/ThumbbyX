@@ -14,6 +14,7 @@ import PasswordInput from "../components/auth/PasswordInput";
 import contractorsBg from "../assets/contractors-bg.png";
 import Navbar from "../components/layout/Navbar";
 import Footer from "../components/layout/Footer";
+import { useAuth } from "../contexts/AuthContext";
 
 const itemMotion = {
   initial: { opacity: 0, y: 28 },
@@ -22,6 +23,7 @@ const itemMotion = {
 };
 
 export default function Login() {
+  const { setAuthenticatedUser } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const [formData, setFormData] = useState({
@@ -90,6 +92,7 @@ localStorage.setItem(
   "user",
   JSON.stringify(user)
 );
+    setAuthenticatedUser(user);
     console.log(
       "Logged In User:",
       user
