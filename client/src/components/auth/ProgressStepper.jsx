@@ -10,7 +10,7 @@ export default function ProgressStepper({ steps, currentStep }) {
             <div
               className={`flex h-9 w-9 items-center justify-center rounded-full text-sm font-bold sm:mx-auto ${
                 isDone || isActive
-                  ? "bg-orange-500 text-white"
+                  ? "bg-blue-950 text-white"
                   : "bg-slate-100 text-slate-500"
               }`}
             >

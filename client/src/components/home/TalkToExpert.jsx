@@ -1,91 +1,311 @@
-import expertImage from "../../assets/family.png";
+import { motion } from "framer-motion";
+import expertImage from "../../assets/service.png";
+import { useState } from "react";
+import axios from "axios";
+import { toast } from "react-toastify";
+import { API_BASE_URL } from "../../services/api";
+
+const textVariants = {
+  hidden: { opacity: 0, x: -60 },
+  visible: (i) => ({
+    opacity: 1,
+    x: 0,
+    transition: { duration: 0.6, delay: i * 0.15, ease: "easeOut" },
+  }),
+};
 
 const TalkToExpert = () => {
+  const [formData, setFormData] = useState({
+    customerName: "",
+    customerPhone: "",
+    customerEmail: "",
+    city: "",
+    projectType: "",
+    expectedStartTime: "",
+    plotArea: "",
+    budget: "",
+    message: "",
+  });
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSubmit = async () => {
+    try {
+      await axios.post(API_BASE_URL + "/leads", {
+        contractorId: null,
+        leadType: "general",
+        customerName: formData.customerName,
+        customerPhone: formData.customerPhone,
+        customerEmail: formData.customerEmail,
+        city: formData.city,
+        projectType: formData.projectType,
+        expectedStartTime: formData.expectedStartTime,
+        plotArea: formData.plotArea,
+        budget: formData.budget,
+        message: formData.message,
+      });
+
+      toast.success("Your request has been submitted successfully!");
+
+      setFormData({
+        customerName: "",
+        customerPhone: "",
+        customerEmail: "",
+        city: "",
+        projectType: "",
+        expectedStartTime: "",
+        plotArea: "",
+        budget: "",
+        message: "",
+      });
+    } catch (error) {
+      console.log(error);
+      toast.error("Failed to submit request");
+    }
+  };
+
   return (
-    <section className="py-24 bg-blue-900">
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
+    <section className="relative py-10 bg-slate-50 overflow-hidden">
+      <div className="absolute top-0 left-0 w-[400px] h-[400px] bg-[#4b35a4]/8 rounded-full blur-[100px] pointer-events-none" />
+      <div className="absolute bottom-0 right-0 w-[400px] h-[400px] bg-[#211c58]/8 rounded-full blur-[100px] pointer-events-none" />
+
+      <div className="relative max-w-7xl mx-auto px-6">
+        <div className="grid lg:grid-cols-2 gap-16 items-stretch">
 
           {/* Left Side */}
-          <div className="text-white">
-            <span className="bg-white/20 px-4 py-2 rounded-full text-sm">
-              Free Consultation
-            </span>
+          {/* ✅ FIX 1: Changed justify-between → justify-start + gap-6 */}
+          <div className="flex flex-col justify-start gap-6">
 
-            <h2 className="text-5xl font-bold mt-6 leading-tight">
-              Ready To Build
-              <br />
-              Your Dream Home?
-            </h2>
+            <div>
+              <motion.span
+                custom={0}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+                variants={textVariants}
+                className="inline-block text-[#4b35a4] font-bold uppercase tracking-[3px] text-sm"
+              >
+                Get In Touch
+              </motion.span>
 
-            <p className="text-blue-100 text-lg mt-6 leading-relaxed">
-              Speak with our construction experts and get guidance on
-              contractor selection, budgeting, project planning, and execution.
-            </p>
+              <motion.h2
+                custom={1}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+                variants={textVariants}
+                className="text-3xl md:text-4xl font-bold text-[#211c58] mt-2 leading-tight"
+              >
+                Ready to Start Your{" "}
+                <span className="text-[#4b35a4]">Construction</span> Journey?
+              </motion.h2>
 
-            <div className="mt-8 space-y-4">
-              <div>✓ Free Initial Consultation</div>
-              <div>✓ Expert Construction Guidance</div>
-              <div>✓ Transparent Planning</div>
-              <div>✓ Trusted Contractor Recommendations</div>
+              <motion.p
+                custom={2}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+                variants={textVariants}
+                className="text-slate-500 text-sm mt-4 leading-relaxed max-w-md"
+              >
+                Whether it's a dream home or a landmark commercial project, our
+                experts are here to guide you through every milestone.
+              </motion.p>
+
+              {/* Checklist */}
+              <motion.div
+                custom={4}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+                variants={textVariants}
+                className="mt-5 space-y-2"
+              >
+                {[
+                  "Free Initial Consultation",
+                  "Expert Construction Guidance",
+                  "Transparent Planning",
+                  "Trusted Contractor Recommendations",
+                ].map((item, i) => (
+                  <div key={i} className="flex items-center gap-3">
+                    <div className="w-4 h-4 rounded-full bg-[#4b35a4]/15 flex items-center justify-center flex-shrink-0">
+                      <span className="text-[#4b35a4] text-xs font-bold">✓</span>
+                    </div>
+                    <span className="text-slate-600 font-medium">{item}</span>
+                  </div>
+                ))}
+              </motion.div>
             </div>
 
-            <img
-              src={expertImage}
-              alt="Construction Expert"
-              className="mt-10 rounded-3xl shadow-2xl max-w-md"
-            />
+            {/* ✅ FIX 2: Removed mt-8, image now flows naturally after checklist */}
+            <motion.div
+              custom={5}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={textVariants}
+            >
+              {/* ✅ FIX 3: Added loading="eager" and fetchpriority="high" */}
+              <img
+                src={expertImage}
+                alt="Construction Expert"
+                loading="eager"
+                fetchpriority="high"
+                decoding="async"
+                className="rounded-[32px] w-full object-cover"
+                style={{
+                  boxShadow: `
+                    0 2px 0 0 rgba(75,53,164,0.08),
+                    0 4px 0 0 rgba(75,53,164,0.06),
+                    0 6px 0 0 rgba(75,53,164,0.04),
+                    0 8px 0 0 rgba(75,53,164,0.02),
+                    0 20px 40px -8px rgba(33,28,88,0.18),
+                    0 40px 80px -16px rgba(75,53,164,0.15),
+                    4px 8px 24px -4px rgba(75,53,164,0.12),
+                    -4px 8px 24px -4px rgba(33,28,88,0.08)
+                  `,
+                  transform: "perspective(1000px) rotateX(1deg)",
+                }}
+              />
+            </motion.div>
           </div>
 
-          {/* Right Side */}
-          <div className="bg-white rounded-3xl p-8 shadow-2xl">
+          {/* Right Side — Form */}
+          <motion.div
+            custom={2}
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7, ease: "easeOut" }}
+            style={{
+              background: "white",
+              borderRadius: "25px",
+              padding: "30px",
+              border: "1px solid rgba(75,53,164,0.12)",
+              boxShadow: `
+                0 2px 0 0 rgba(75,53,164,0.08),
+                0 4px 0 0 rgba(75,53,164,0.06),
+                0 6px 0 0 rgba(75,53,164,0.04),
+                0 8px 0 0 rgba(75,53,164,0.02),
+                0 20px 40px -8px rgba(33,28,88,0.18),
+                0 40px 80px -16px rgba(75,53,164,0.15),
+                4px 8px 24px -4px rgba(75,53,164,0.12),
+                -4px 8px 24px -4px rgba(33,28,88,0.08)
+              `,
+              transform: "perspective(1000px) rotateX(1deg)",
+              height: "100%",
+              boxSizing: "border-box",
+            }}
+          >
+            <div className="mb-5">
+              <h3 className="text-3xl font-bold text-[#211c58]">
+                Expert Consultation
+              </h3>
+              <p className="text-slate-500 mt-2">
+                Fill in your details and our team will contact you shortly.
+              </p>
+              <div className="w-10 h-1 bg-[#4b35a4] rounded-full mt-4" />
+            </div>
 
-            <h3 className="text-3xl font-bold text-gray-900 mb-2">
-              Book Free Consultation
-            </h3>
-
-            <p className="text-gray-600 mb-8">
-              Fill in your details and our team will contact you shortly.
-            </p>
-
-            <form className="space-y-5">
-
+            <div className="space-y-3">
               <input
-                type="text"
-                placeholder="Full Name"
-                className="w-full border rounded-xl px-4 py-4 outline-none focus:border-blue-600"
+                name="customerName"
+                value={formData.customerName}
+                onChange={handleChange}
+                placeholder="Your Full Name"
+                className="w-full border border-gray-200 rounded-[16px] px-4 py-3.5 outline-none focus:border-[#4b35a4]"
               />
 
               <input
-                type="tel"
+                name="customerPhone"
+                value={formData.customerPhone}
+                onChange={handleChange}
                 placeholder="Phone Number"
-                className="w-full border rounded-xl px-4 py-4 outline-none focus:border-blue-600"
+                className="w-full border border-gray-200 rounded-[16px] px-4 py-3.5 outline-none focus:border-[#4b35a4]"
               />
 
-              <select className="w-full border rounded-xl px-4 py-4 outline-none focus:border-blue-600">
-                <option>Project Type</option>
-                <option>New Home Construction</option>
-                <option>Renovation</option>
-                <option>Interior Design</option>
-                <option>Commercial Project</option>
+              <input
+                name="customerEmail"
+                value={formData.customerEmail}
+                onChange={handleChange}
+                placeholder="Email Address"
+                className="w-full border border-gray-200 rounded-[16px] px-4 py-3.5 outline-none focus:border-[#4b35a4]"
+              />
+
+              <input
+                name="city"
+                value={formData.city}
+                onChange={handleChange}
+                placeholder="Project City / Location"
+                className="w-full border border-gray-200 rounded-[16px] px-4 py-3.5 outline-none focus:border-[#4b35a4]"
+              />
+
+              <select
+                name="projectType"
+                value={formData.projectType}
+                onChange={handleChange}
+                className="w-full border border-gray-200 rounded-[16px] px-4 py-3.5 outline-none focus:border-[#4b35a4]"
+              >
+                <option value="">Project Type</option>
+                <option value="New Home Construction">New Home Construction</option>
+                <option value="Villa Construction">Villa Construction</option>
+                <option value="Commercial Construction">Commercial Construction</option>
+                <option value="Interior & Renovation">Interior & Renovation</option>
+                <option value="Turnkey Project">Turnkey Project</option>
               </select>
 
+              <select
+                name="expectedStartTime"
+                value={formData.expectedStartTime}
+                onChange={handleChange}
+                className="w-full border border-gray-200 rounded-[16px] px-4 py-3.5 outline-none focus:border-[#4b35a4]"
+              >
+                <option value="">Expected Start Time</option>
+                <option value="Immediately">Immediately</option>
+                <option value="0-3 Months">0-3 Months</option>
+                <option value="3-6 Months">3-6 Months</option>
+                <option value="6-12 Months">6-12 Months</option>
+              </select>
+
+              <input
+                name="plotArea"
+                value={formData.plotArea}
+                onChange={handleChange}
+                placeholder="Approx Plot Area (Sq Ft)"
+                className="w-full border border-gray-200 rounded-[16px] px-4 py-3.5 outline-none focus:border-[#4b35a4]"
+              />
+
+              <input
+                name="budget"
+                value={formData.budget}
+                onChange={handleChange}
+                placeholder="Estimated Budget"
+                className="w-full border border-gray-200 rounded-[16px] px-4 py-3.5 outline-none focus:border-[#4b35a4]"
+              />
+
               <textarea
-                rows="4"
-                placeholder="Tell us about your project..."
-                className="w-full border rounded-xl px-4 py-4 outline-none focus:border-blue-600"
+                name="message"
+                value={formData.message}
+                onChange={handleChange}
+                rows={5}
+                placeholder="Tell us about your project requirements"
+                className="w-full border border-gray-200 rounded-[16px] px-4 py-3.5 outline-none focus:border-[#4b35a4] resize-none"
               />
 
               <button
-                type="submit"
-                className="w-full bg-orange-500 hover:bg-orange-600 text-white py-4 rounded-xl font-semibold transition"
+                onClick={handleSubmit}
+                type="button"
+                className="w-full py-4 rounded-[16px] font-bold text-white bg-gradient-to-r from-[#4b35a4] to-[#6b52c8]"
               >
-                Book Free Consultation
+                Request Call Back →
               </button>
-
-            </form>
-
-          </div>
+            </div>
+          </motion.div>
 
         </div>
       </div>

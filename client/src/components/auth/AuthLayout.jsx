@@ -1,6 +1,6 @@
-import { Link } from "react-router-dom";
-import { FaArrowLeft } from "react-icons/fa";
-import logo from "../../assets/ThumbbyX Logo.png";
+import { motion } from "framer-motion";
+
+const ease = [0.22, 1, 0.36, 1];
 
 export default function AuthLayout({
   eyebrow,
@@ -13,60 +13,116 @@ export default function AuthLayout({
   return (
     <main className="min-h-screen bg-white text-slate-950">
       <div className="grid min-h-screen lg:grid-cols-[1.05fr_0.95fr]">
-        <section className="relative flex flex-col px-5 py-6 sm:px-8 lg:px-12">
-
+        <motion.section
+          initial={{ opacity: 0, x: -70 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.85, ease }}
+          className="relative flex flex-col px-5 py-6 sm:px-8 lg:px-12"
+        >
           <div className="mx-auto flex w-full max-w-xl flex-1 flex-col justify-center py-12">
             {eyebrow && (
-              <span className="mb-4 text-sm font-bold uppercase tracking-[0.25em] text-orange-500">
+              <motion.span
+                initial={{ opacity: 0, y: -28 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.65, ease, delay: 0.12 }}
+                className="mb-4 text-sm font-bold uppercase tracking-[0.25em] text-blue-950"
+              >
                 {eyebrow}
-              </span>
+              </motion.span>
             )}
 
-            <h1 className="text-4xl font-bold tracking-normal text-blue-950 sm:text-5xl">
+            <motion.h1
+              initial={{ opacity: 0, x: -40 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.7, ease, delay: 0.18 }}
+              className="text-4xl font-bold tracking-normal text-blue-950 sm:text-5xl"
+            >
               {title}
-            </h1>
+            </motion.h1>
 
             {subtitle && (
-              <p className="mt-4 text-base leading-7 text-slate-600 sm:text-lg">
+              <motion.p
+                initial={{ opacity: 0, y: 28 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.7, ease, delay: 0.24 }}
+                className="mt-4 text-base leading-7 text-slate-600 sm:text-lg"
+              >
                 {subtitle}
-              </p>
+              </motion.p>
             )}
 
-            <div className="mt-8">{children}</div>
+            <motion.div
+              initial={{ opacity: 0, y: 42 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.75, ease, delay: 0.3 }}
+              className="mt-8"
+            >
+              {children}
+            </motion.div>
           </div>
-        </section>
+        </motion.section>
 
-        <section className="relative hidden overflow-hidden bg-gradient-to-br from-blue-950 via-blue-900 to-slate-950 p-8 lg:block">
-          <div className="absolute -left-20 top-20 h-72 w-72 rounded-full bg-orange-500/20 blur-3xl" />
-          <div className="absolute -right-24 bottom-16 h-80 w-80 rounded-full bg-blue-400/20 blur-3xl" />
+        <motion.section
+          initial={{ opacity: 0, x: 80 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.9, ease, delay: 0.08 }}
+          className="relative hidden overflow-hidden bg-black p-6 lg:block xl:p-8"
+        >
+          <div className="absolute -left-20 top-20 h-72 w-72 rounded-full bg-white/10 blur-3xl" />
+          <div className="absolute -right-24 bottom-16 h-80 w-80 rounded-full bg-blue-950/20 blur-3xl" />
 
-          <div className="relative flex h-full flex-col justify-end overflow-hidden rounded-[36px] border border-white/10 bg-white/10 p-8 shadow-2xl backdrop-blur-xl">
+          <motion.div
+            initial={{ opacity: 0, y: 55, rotateY: -8 }}
+            animate={{ opacity: 1, y: 0, rotateY: 0 }}
+            transition={{ duration: 0.85, ease, delay: 0.22 }}
+            whileHover={{ y: -8, rotateX: 2, rotateY: -3 }}
+            className="relative flex h-full flex-col justify-end overflow-hidden rounded-[28px] border border-white/10 bg-white/10 p-7 shadow-[0_35px_100px_rgba(0,0,0,0.42)] backdrop-blur-xl xl:p-8"
+          >
             {image && (
-              <img
+              <motion.img
+                initial={{ scale: 1.08 }}
+                animate={{ scale: 1 }}
+                transition={{ duration: 1.2, ease }}
                 src={image}
                 alt={imageAlt}
-                className="absolute inset-0 h-full w-full object-cover opacity-70"
+                className="absolute inset-0 h-full w-full object-cover opacity-85"
               />
             )}
 
-            <div className="absolute inset-0 bg-gradient-to-t from-blue-950 via-blue-950/50 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/50 to-black/15" />
+            <div className="absolute inset-0 bg-gradient-to-r from-black/10 via-transparent to-transparent" />
 
             <div className="relative z-10">
-              <span className="rounded-full bg-orange-500 px-4 py-2 text-sm font-bold text-white shadow-lg shadow-orange-500/30">
+              <motion.span
+                initial={{ opacity: 0, y: -26 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.65, ease, delay: 0.42 }}
+                className="rounded-full bg-blue-950 px-4 py-2 text-sm font-bold text-white shadow-lg shadow-black/40"
+              >
                 ThumbbyX
-              </span>
+              </motion.span>
 
-              <h2 className="mt-5 max-w-lg text-4xl font-bold leading-tight text-white">
+              <motion.h2
+                initial={{ opacity: 0, x: 36 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.7, ease, delay: 0.5 }}
+                className="mt-5 max-w-lg text-3xl font-bold leading-tight text-white xl:text-4xl"
+              >
                 Build, manage, and track construction with confidence.
-              </h2>
+              </motion.h2>
 
-              <p className="mt-4 max-w-md text-blue-100">
+              <motion.p
+                initial={{ opacity: 0, y: 26 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.7, ease, delay: 0.58 }}
+                className="mt-4 max-w-md text-white/80"
+              >
                 A premium construction management platform for homeowners and
                 verified contractors.
-              </p>
+              </motion.p>
             </div>
-          </div>
-        </section>
+          </motion.div>
+        </motion.section>
       </div>
     </main>
   );

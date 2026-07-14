@@ -3,23 +3,36 @@ import AuthLayout from "../../components/auth/AuthLayout";
 import AuthInput from "../../components/auth/AuthInput";
 import AuthButton from "../../components/auth/AuthButton";
 import heroHouseImage from "../../assets/hero-house.png";
+import { forgotPassword }
+from "../../services/authService";
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState("");
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
+  const handleSubmit = async (
+  event
+) => {
+  event.preventDefault();
 
-    if (!email.trim()) {
-      setError("Email is required");
-      return;
-    }
+  if (!email.trim()) {
+    setError("Email is required");
+    return;
+  }
+
+  try {
+    await forgotPassword(email);
 
     setError("");
     setSuccess(true);
-  };
+  } catch (error) {
+    setError(
+      error.response?.data?.message ||
+      "Something went wrong"
+    );
+  }
+};
 
   return (
     <AuthLayout

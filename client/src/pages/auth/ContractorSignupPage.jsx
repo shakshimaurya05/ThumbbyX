@@ -1,10 +1,14 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import AuthLayout from "../../components/auth/AuthLayout";
 import AuthInput from "../../components/auth/AuthInput";
 import AuthButton from "../../components/auth/AuthButton";
 import PasswordInput from "../../components/auth/PasswordInput";
 import contractorsBg from "../../assets/contractors-bg.png";
-
+import {
+  registerContractor,
+} from "../../services/authService";
+import { toast } from "react-toastify";
 const requirements = [
   "Aadhaar Verification",
   "PAN Verification",
@@ -16,9 +20,8 @@ const requirements = [
 ];
 
 export default function ContractorSignupPage() {
-  const [formData, setFormData] = useState({
+   const navigate = useNavigate();  const [formData, setFormData] = useState({
     fullName: "",
-    companyName: "",
     email: "",
     phone: "",
     city: "",
@@ -36,13 +39,36 @@ export default function ContractorSignupPage() {
     }));
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
+const handleSubmit = async (event) => {
+  event.preventDefault();
+if (formData.password.length < 6) {
+  toast.error("Password must be at least 6 characters");
+  return;
+}
 
-    alert(
-      "Contractor account created successfully. Verification can be completed later from the dashboard."
+if (
+  formData.password !==
+  formData.confirmPassword
+) {
+  toast.error("Passwords do not match");
+  return;
+}
+  try {
+    await registerContractor(
+      formData
     );
-  };
+
+    toast.success("Account created successfully!");
+    navigate("/login");
+  } catch (error) {
+  console.log(error);
+
+  toast.error(
+    error.response?.data?.message ||
+      "Something went wrong"
+  );
+}
+};
 
   return (
     <AuthLayout
@@ -61,15 +87,6 @@ export default function ContractorSignupPage() {
               label="Full Name"
               placeholder="Enter your full name"
               value={formData.fullName}
-              onChange={handleChange}
-            />
-
-            <AuthInput
-              id="companyName"
-              name="companyName"
-              label="Company Name"
-              placeholder="Enter company name"
-              value={formData.companyName}
               onChange={handleChange}
             />
 

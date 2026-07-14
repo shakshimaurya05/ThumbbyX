@@ -5,8 +5,15 @@ import AuthInput from "../../components/auth/AuthInput";
 import AuthButton from "../../components/auth/AuthButton";
 import PasswordInput from "../../components/auth/PasswordInput";
 import happyFamilyImage from "../../assets/happy-family.png";
-
+import {
+  registerCustomer,
+} from "../../services/authService";
+import { toast } from "react-toastify";
+import { useNavigate }
+from "react-router-dom";
 export default function CustomerSignupPage() {
+  const navigate =
+  useNavigate();
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
@@ -28,28 +35,87 @@ export default function CustomerSignupPage() {
     }));
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
+const handleSubmit = async (
+  event
+) => {
+  event.preventDefault();
 
-    const nextErrors = {};
+  const nextErrors = {};
 
-    if (!formData.fullName.trim()) nextErrors.fullName = "Full name is required";
-    if (!formData.email.trim()) nextErrors.email = "Email is required";
-    if (!formData.phone.trim()) nextErrors.phone = "Phone number is required";
-    if (!formData.password.trim()) nextErrors.password = "Password is required";
-    if (formData.password !== formData.confirmPassword) {
-      nextErrors.confirmPassword = "Passwords do not match";
-    }
-    if (!formData.city.trim()) nextErrors.city = "City is required";
-    if (!formData.state.trim()) nextErrors.state = "State is required";
-    if (!formData.terms) nextErrors.terms = "Please accept the terms";
+  if (!formData.fullName.trim())
+    nextErrors.fullName =
+      "Full name is required";
 
-    setErrors(nextErrors);
+  if (!formData.email.trim())
+    nextErrors.email =
+      "Email is required";
 
-    if (Object.keys(nextErrors).length === 0) {
-      alert("Customer account UI submitted. Backend integration pending.");
-    }
-  };
+  if (!formData.phone.trim())
+    nextErrors.phone =
+      "Phone number is required";
+
+  if (!formData.city.trim())
+    nextErrors.city =
+      "City is required";
+
+  if (!formData.state.trim())
+    nextErrors.state =
+      "State is required";
+
+  if (!formData.password.trim())
+    nextErrors.password =
+      "Password is required";
+if (formData.password.length < 6) {
+  nextErrors.password =
+    "Password must be at least 6 characters";
+}
+  if (
+    formData.password !==
+    formData.confirmPassword
+  ) {
+    nextErrors.confirmPassword =
+      "Passwords do not match";
+  }
+
+  if (!formData.terms) {
+    nextErrors.terms =
+      "Please accept the terms";
+  }
+
+  setErrors(nextErrors);
+
+  if (
+    Object.keys(nextErrors)
+      .length > 0
+  )
+    return;
+
+  try {
+    const response =
+      await registerCustomer(
+        formData
+      );
+ console.log(
+      response.data
+    );
+    toast.success("Account created successfully!");
+navigate("/login");
+   
+  } catch (error) {
+  console.log("FULL ERROR:", error);
+
+  console.log(
+    "SERVER RESPONSE:",
+    error.response?.data
+  );
+
+  toast.error(
+    JSON.stringify(
+      error.response?.data
+    )
+  );
+}
+};
 
   return (
     <AuthLayout
