@@ -166,28 +166,26 @@ export const getContractorProfile =
           url: result.secure_url,
         };
       }
-if (files.aadhaarDocument?.[0]) {
 
-  console.log("====== Aadhaar File ======");
-  console.log(files.aadhaarDocument[0].originalname);
-  console.log(files.aadhaarDocument[0].mimetype);
-  console.log(files.aadhaarDocument[0].size);
-  console.log(files.aadhaarDocument[0].buffer.length);
+      if (
+        files.aadhaarDocument?.[0]
+      ) {
+        const result =
+          await uploadToCloudinary(
+            files
+              .aadhaarDocument[0]
+              .buffer,
+            "thumbbyx/aadhaar"
+          );
 
-  const result =
-    await uploadToCloudinary(
-      files.aadhaarDocument[0].buffer,
-      "thumbbyx/aadhaar"
-    );
-
-  console.log("====== Cloudinary Result ======");
-  console.log(result);
-
-  profile.verification.aadhaarDocument = {
-    publicId: result.public_id,
-    url: result.secure_url,
-  };
-}
+        profile.verification.aadhaarDocument =
+          {
+            publicId:
+              result.public_id,
+            url:
+              result.secure_url,
+          };
+      }
 
       if (
         files.panDocument?.[0]
