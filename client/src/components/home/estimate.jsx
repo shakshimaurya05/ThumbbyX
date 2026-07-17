@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 import calculatorImg from "../../assets/calculator.webp";
 
 const CostEstimator = () => {
@@ -48,8 +49,9 @@ const CostEstimator = () => {
                 Thumbbyx's detailed, reliable estimation tool.
               </p>
 
-              <button className="
+              <Link to="/cost-estimator" className="
                 mt-4
+                inline-block
                 px-6 py-3
                 bg-[#3d2d8f]
                 hover:bg-[#4b35a4]
@@ -62,7 +64,7 @@ const CostEstimator = () => {
                 hover:shadow-[0_0_30px_rgba(75,53,164,0.5)]
               ">
                 Calculate Cost Instantly
-              </button>
+              </Link>
             </div>
 
             {/* Right Image */}

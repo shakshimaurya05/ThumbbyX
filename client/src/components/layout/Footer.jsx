@@ -1,6 +1,13 @@
 import { FaFacebookF, FaInstagram, FaLinkedinIn, FaTwitter } from "react-icons/fa";
+import { Link } from "react-router-dom";
+import { useAuth } from "../../contexts/AuthContext";
+import { dashboardPathForRole } from "../../utils/roles";
 
 const Footer = () => {
+  const { user } = useAuth();
+  const projectTrackingPath = user ? dashboardPathForRole(user.role) : "/login";
+  const footerLinkClass = "transition hover:text-white";
+
   return (
     <footer className="bg-gray-950 text-white">
       <div className="max-w-7xl mx-auto px-6 py-16">
@@ -19,21 +26,18 @@ const Footer = () => {
             </p>
 
             <div className="flex gap-4">
-              <div className="bg-gray-800 p-3 rounded-full cursor-pointer hover:bg-blue-600 transition">
+              <a href="https://www.facebook.com/share/1HRVzyJ39w/" target="_blank" rel="noreferrer" aria-label="Facebook" className="bg-gray-800 p-3 rounded-full hover:bg-blue-600 transition">
                 <FaFacebookF />
-              </div>
+              </a>
 
-              <div className="bg-gray-800 p-3 rounded-full cursor-pointer hover:bg-pink-600 transition">
+              <a href="https://www.instagram.com/thumbbyxglobal?igsh=MXFlYjBoajdwbWVmMQ==" target="_blank" rel="noreferrer" aria-label="Instagram" className="bg-gray-800 p-3 rounded-full hover:bg-pink-600 transition">
                 <FaInstagram />
-              </div>
+              </a>
 
-              <div className="bg-gray-800 p-3 rounded-full cursor-pointer hover:bg-blue-700 transition">
+              <a href="https://www.linkedin.com/company/thumbbyx" target="_blank" rel="noreferrer" aria-label="LinkedIn" className="bg-gray-800 p-3 rounded-full hover:bg-blue-700 transition">
                 <FaLinkedinIn />
-              </div>
+              </a>
 
-              <div className="bg-gray-800 p-3 rounded-full cursor-pointer hover:bg-sky-500 transition">
-                <FaTwitter />
-              </div>
             </div>
           </div>
 
@@ -44,10 +48,10 @@ const Footer = () => {
             </h3>
 
             <ul className="space-y-3 text-gray-400">
-              <li>About Us</li>
-              <li>Contact Us</li>
-              <li>Blogs & Articles</li>
-              <li>Reviews</li>
+              <li><Link to="/about-us" className={footerLinkClass}>About Us</Link></li>
+              <li><Link to="/contact" className={footerLinkClass}>Contact Us</Link></li>
+              <li><Link to="/blogs" className={footerLinkClass}>Blogs & Articles</Link></li>
+              <li><Link to="/reviews" className={footerLinkClass}>Reviews</Link></li>
             </ul>
           </div>
 
@@ -58,10 +62,10 @@ const Footer = () => {
             </h3>
 
             <ul className="space-y-3 text-gray-400">
-              <li>Find Contractors</li>
-              <li>Cost Estimator</li>
-              <li>Project Tracking</li>
-              <li>Home Construction</li>
+              <li><Link to="/contractors" className={footerLinkClass}>Find Contractors</Link></li>
+              <li><Link to="/cost-estimator" className={footerLinkClass}>Cost Estimator</Link></li>
+              <li><Link to={projectTrackingPath} className={footerLinkClass}>Project Tracking</Link></li>
+              <li><Link to="/talk-to-expert" className={footerLinkClass}>Home Construction</Link></li>
             </ul>
           </div>
 
@@ -72,11 +76,11 @@ const Footer = () => {
             </h3>
 
             <ul className="space-y-3 text-gray-400">
-              <li>Delhi NCR</li>
-              <li>Lucknow</li>
-              <li>Bengaluru</li>
-              <li>Ahmedabad</li>
-              <li>Ranchi</li>
+              <li><Link to="/talk-to-expert" className={footerLinkClass}>Delhi NCR</Link></li>
+              <li><Link to="/talk-to-expert" className={footerLinkClass}>Lucknow</Link></li>
+              <li><Link to="/talk-to-expert" className={footerLinkClass}>Bengaluru</Link></li>
+              <li><Link to="/talk-to-expert" className={footerLinkClass}>Ahmedabad</Link></li>
+              <li><Link to="/talk-to-expert" className={footerLinkClass}>Ranchi</Link></li>
             </ul>
           </div>
 

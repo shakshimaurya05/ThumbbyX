@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { ArrowRight, CheckCircle2, Clock, Mail, MapPin, Phone } from "lucide-react";
 import axios from "axios";
@@ -12,12 +12,14 @@ const contactCards = [
     icon: Phone,
     title: "Phone Number",
     value: "+91 9296244229",
+    href: "tel:+919296244229",
     dark: false,
   },
   {
     icon: Mail,
     title: "Email Address",
     value: "info@thumbbyx.com",
+    href: "mailto:info@thumbbyx.com",
     dark: true,
   },
   {
@@ -30,6 +32,7 @@ const contactCards = [
         Boring Road, Patna
       </>
     ),
+    href: "https://www.google.com/maps/search/?api=1&query=Pushpanjali+Apartment%2C+Boring+Road%2C+Patna",
     dark: false,
   },
 ];
@@ -79,6 +82,7 @@ const cardVariants = {
 };
 
 export default function Contact() {
+  const formRef = useRef(null);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -113,6 +117,12 @@ export default function Contact() {
       toast.error(error.response?.data?.message || "Failed to send message");
     }
   };
+
+  const focusContactForm = () => {
+    formRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+    window.setTimeout(() => formRef.current?.querySelector("input")?.focus(), 500);
+  };
+
   return (
     <>
       <Navbar />
@@ -163,8 +173,11 @@ export default function Contact() {
             {contactCards.map((card, i) => {
               const Icon = card.icon;
               return (
-                <motion.div
+                <motion.a
                   key={card.title}
+                  href={card.href}
+                  target={card.title === "Our Location" ? "_blank" : undefined}
+                  rel={card.title === "Our Location" ? "noreferrer" : undefined}
                   custom={i}
                   variants={cardVariants}
                   initial="hidden"
@@ -172,10 +185,10 @@ export default function Contact() {
                   viewport={{ once: true }}
                   whileHover={{ y: -6, scale: 1.01 }}
                   transition={{ type: "spring", stiffness: 300 }}
-                  className={`flex items-center gap-6 p-10 ${
+                  className={`flex items-center gap-6 p-10 transition-colors ${
                     card.dark
-                      ? "bg-[#211c58] text-white"
-                      : "bg-white"
+                      ? "bg-[#211c58] text-white hover:bg-[#2a2470]"
+                      : "bg-white hover:bg-[#faf9ff]"
                   }`}
                 >
                   <div className={`flex h-20 w-20 flex-shrink-0 items-center justify-center rounded-full ${
@@ -191,7 +204,7 @@ export default function Contact() {
                       {card.value}
                     </p>
                   </div>
-                </motion.div>
+                </motion.a>
               );
             })}
           </div>
@@ -227,7 +240,7 @@ export default function Contact() {
                 Tell Us About Your Project
               </h2>
 
-              <form className="space-y-5" onSubmit={handleSubmit}>
+              <form ref={formRef} className="space-y-5" onSubmit={handleSubmit}>
                 <div className="grid gap-5 md:grid-cols-2">
                   <input
                     type="text"
@@ -486,6 +499,8 @@ export default function Contact() {
 
               <div className="mt-5 flex flex-wrap justify-center gap-4">
                 <motion.button
+                  type="button"
+                  onClick={focusContactForm}
                   whileHover={{ y: -2, scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   className="rounded-xl bg-brand-button-gradient px-6 py-2 font-semibold text-white shadow-[0_8px_25px_rgba(75,53,164,0.5)] hover:shadow-[0_12px_35px_rgba(75,53,164,0.65)] transition-all duration-300"
@@ -494,6 +509,8 @@ export default function Contact() {
                 </motion.button>
 
                 <motion.button
+                  type="button"
+                  onClick={() => window.location.assign("tel:+919296244229")}
                   whileHover={{ y: -2, scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   className="rounded-xl border border-[#4b35a4]/50 px-6 py-2 font-semibold text-white hover:border-[#a78bfa] hover:text-[#a78bfa] transition-all duration-300"

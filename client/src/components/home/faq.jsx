@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { Link } from "react-router-dom";
 import { FaPlus, FaMinus, FaQuestionCircle } from "react-icons/fa";
 import { FaHeadset } from "react-icons/fa6";
 
@@ -173,7 +174,8 @@ const Faq = () => {
     Can't find the answer you're looking for? Please chat to our friendly team.
   </p>
 
-  <button className="
+  <Link to="/contact" className="
+    inline-block
     mt-6
     px-8 py-3
     bg-[#4b35a4]
@@ -187,7 +189,7 @@ const Faq = () => {
     shadow-[0_4px_15px_rgba(75,53,164,0.3)]
   ">
     Get in Touch
-  </button>
+  </Link>
 </motion.div>
 
       </div>

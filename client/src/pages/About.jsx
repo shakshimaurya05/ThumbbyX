@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 import {
   CheckCircle2,
   Eye,
@@ -399,13 +400,13 @@ export default function About() {
                 your dream home to life with complete transparency.
               </p>
 
-              <motion.button
+              <motion.div
                 whileHover={{ scale: 1.04 }}
                 whileTap={{ scale: 0.97 }}
                 className="rounded-xl bg-brand-button-gradient px-8 py-4 font-semibold transition hover:bg-blue-950"
               >
-                Start Your Project
-              </motion.button>
+                <Link to="/talk-to-expert">Start Your Project</Link>
+              </motion.div>
             </motion.div>
 
           </div>
