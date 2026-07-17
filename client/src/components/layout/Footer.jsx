@@ -34,7 +34,7 @@ const Footer = () => {
                 <FaInstagram />
               </a>
 
-              <a href="https://www.linkedin.com/company/thumbbyx" target="_blank" rel="noreferrer" aria-label="LinkedIn" className="bg-gray-800 p-3 rounded-full hover:bg-blue-700 transition">
+              <a href="https://www.linkedin.com/company/thumbbyx-global-private-limited" target="_blank" rel="noreferrer" aria-label="LinkedIn" className="bg-gray-800 p-3 rounded-full hover:bg-blue-700 transition">
                 <FaLinkedinIn />
               </a>
 
