@@ -9,6 +9,10 @@ import {
   X,
   ArrowUpRight,
   Shield,
+  Hammer,
+  House,
+  HardHat,
+  ArrowLeft,
 } from "lucide-react";
 import { API_BASE_URL } from "../services/api";
 import Navbar from "../components/layout/Navbar";
@@ -391,7 +395,7 @@ const CityIcon = ({ city, size = 16, className = "" }) => {
 const cities = [
   "All Cities","Patna","Gaya","Muzaffarpur","Bhagalpur","Darbhanga","Purnia","Arrah",
   "Begusarai","Katihar","Munger","Chhapra","Ranchi","Hazaribagh","Bokaro","Dhanbad",
-  "Kolkata","Delhi NCR","Lucknow","Kanpur","Ghaziabad","Gurugram","Aligarh",
+  "Kolkata","Delhi","Delhi NCR","Lucknow","Kanpur","Ghaziabad","Gurugram","Aligarh",
   "Varanasi","Mumbai","Pune","Bangalore","Hyderabad","Chennai","Ahmedabad",
   "Surat","Vadodara",
 ];
@@ -401,6 +405,8 @@ export default function FindContractors() {
   const [selectedCity, setSelectedCity] = useState("All Cities");
   const [selectedContractor, setSelectedContractor] = useState(null);
   const [showCityModal, setShowCityModal] = useState(false);
+  const availableCities = ["Patna", "Delhi", "Delhi NCR"];
+  const isComingSoonCity = selectedCity !== "All Cities" && !availableCities.includes(selectedCity);
 
   const filteredContractors =
     selectedCity === "All Cities"
@@ -560,7 +566,51 @@ export default function FindContractors() {
           </div>
         )}
 
-        {/* ── Contractors Grid ── */}
+        {isComingSoonCity ? (
+          <div className="max-w-5xl mx-auto px-4 sm:px-6 pb-24">
+            <motion.div
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+              className="relative overflow-hidden rounded-[2rem] bg-[#17133f] px-6 py-12 sm:px-12 sm:py-16 text-center shadow-[0_30px_80px_rgba(23,19,63,0.2)]"
+            >
+              <div className="absolute -top-20 -left-16 h-56 w-56 rounded-full bg-[#7058e8]/30 blur-3xl" />
+              <div className="absolute -bottom-24 -right-12 h-64 w-64 rounded-full bg-[#a994ff]/25 blur-3xl" />
+              <div className="relative">
+                <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl border border-white/15 bg-white/10 text-[#c9beff] shadow-lg">
+                  <HardHat size={31} strokeWidth={1.6} />
+                </div>
+                <p className="mt-7 text-[10px] font-bold uppercase tracking-[0.28em] text-[#b9aaff]">Expanding soon</p>
+                <h2 className="mt-3 text-3xl font-black tracking-tight text-white sm:text-5xl">We’re coming to {selectedCity}</h2>
+                <p className="mx-auto mt-4 max-w-xl text-sm font-medium leading-7 text-white/65 sm:text-[15px]">
+                  Our verified contractor network is growing. We’re getting ready to make home construction simpler and more dependable in your city.
+                </p>
+
+                <div className="mx-auto mt-9 grid max-w-3xl grid-cols-1 gap-3 text-left sm:grid-cols-3">
+                  {[
+                    { icon: <Hammer size={19} />, title: "Verified contractors", text: "Trusted professionals for every build." },
+                    { icon: <House size={19} />, title: "Home construction", text: "From planning through handover." },
+                    { icon: <Shield size={19} />, title: "Quality you can trust", text: "Clear, reliable support at every step." },
+                  ].map((service) => (
+                    <div key={service.title} className="rounded-2xl border border-white/10 bg-white/[0.07] p-5 backdrop-blur-sm">
+                      <div className="mb-4 w-fit rounded-xl bg-[#8a74ff]/20 p-2.5 text-[#c9beff]">{service.icon}</div>
+                      <h3 className="text-sm font-bold text-white">{service.title}</h3>
+                      <p className="mt-1.5 text-xs leading-5 text-white/55">{service.text}</p>
+                    </div>
+                  ))}
+                </div>
+
+                <button
+                  onClick={() => setSelectedCity("All Cities")}
+                  className="mt-9 inline-flex items-center gap-2 rounded-xl bg-white px-5 py-3 text-xs font-bold uppercase tracking-[0.14em] text-[#211c58] transition hover:-translate-y-0.5 hover:bg-[#eeeaff]"
+                >
+                  <ArrowLeft size={15} />
+                  Browse available cities
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        ) : (
         <div className="max-w-7xl mx-auto px-4 sm:px-6 pb-24">
           <motion.div
             initial={{ opacity: 0, x: -32 }}
@@ -676,7 +726,7 @@ export default function FindContractors() {
             ))}
           </div>
         </div>
-
+        )}
       </section>
       <Footer />
     </>
