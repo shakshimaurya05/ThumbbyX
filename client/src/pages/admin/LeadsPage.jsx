@@ -186,6 +186,13 @@ export default function LeadsPage() {
               </div>
             )}
 
+            <div style={{ background: "#F8F9FC", borderLeft: "3px solid #5B4FCF", borderRadius: "0 10px 10px 0", padding: "12px 14px", fontSize: 13, color: "#4A4F6A", marginBottom: 14, lineHeight: 1.6 }}>
+              <div style={{ fontSize: 10, color: "#5B4FCF", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.6px", marginBottom: 4 }}>
+                Project Requirements
+              </div>
+              <div style={{ whiteSpace: "pre-wrap" }}>{lead.message || "No project requirements provided."}</div>
+            </div>
+
             {/* Actions */}
             <div style={{ display: "flex", gap: 10, flexWrap: "wrap", alignItems: "center" }}>
               {lead.contractorId && lead.status !== "converted" && (
