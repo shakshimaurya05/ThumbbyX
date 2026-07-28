@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import { LayoutDashboard, Target, HardHat, Building2, CreditCard, Video, MessageSquare, Home, ArrowRight, FolderPlus, ShieldCheck, ClipboardList } from "lucide-react";
+import { LayoutDashboard, Target, HardHat, Building2, CreditCard, Video, MessageSquare, Home, ArrowRight, FolderPlus, ShieldCheck, ClipboardList, BriefcaseBusiness, UsersRound } from "lucide-react";
 import { useAuth } from "../../contexts/AuthContext";
 import { isSuperAdmin } from "../../utils/roles";
 
@@ -12,6 +12,8 @@ const NAV = [
   { label: "Payments",     icon: CreditCard,      to: "/admin/payments" },
   { label: "Video Reviews",icon: Video,           to: "/admin/video-reviews" },
   { label: "Enquiries",    icon: MessageSquare,   to: "/admin/inquiries" },
+  { label: "Add Hiring",   icon: BriefcaseBusiness, to: "/admin/hiring" },
+  { label: "Job Applicants", icon: UsersRound,      to: "/admin/job-applicants" },
 ];
 
 const SUPER_ADMIN_NAV = [

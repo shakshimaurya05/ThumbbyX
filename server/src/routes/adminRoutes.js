@@ -23,6 +23,10 @@ import {
   authorize,
   authorizeSuperAdmin,
 } from "../middleware/authMiddleware.js";
+import {
+  createCareer, deleteApplicant, deleteCareer, getAdminCareers, getApplicants,
+  updateApplicantStatus, updateCareer,
+} from "../controllers/careerController.js";
 
 const router = express.Router();
 
@@ -140,4 +144,12 @@ router.get(
   authorizeSuperAdmin,
   listActivityLogs
 );
+
+router.get("/careers", protect, authorize("admin"), getAdminCareers);
+router.post("/careers", protect, authorize("admin"), createCareer);
+router.put("/careers/:id", protect, authorize("admin"), updateCareer);
+router.delete("/careers/:id", protect, authorize("admin"), deleteCareer);
+router.get("/applicants", protect, authorize("admin"), getApplicants);
+router.patch("/applicants/:id/status", protect, authorize("admin"), updateApplicantStatus);
+router.delete("/applicants/:id", protect, authorize("admin"), deleteApplicant);
 export default router;

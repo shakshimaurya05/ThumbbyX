@@ -93,10 +93,6 @@ localStorage.setItem(
   JSON.stringify(user)
 );
     setAuthenticatedUser(user);
-    console.log(
-      "Logged In User:",
-      user
-    );
     toast.success("Logged in successfully");
 
 if (user.role === "contractor") {

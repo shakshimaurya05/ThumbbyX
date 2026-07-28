@@ -12,6 +12,7 @@ from "./routes/ProjectRoutes.js";
 import inquiryRoutes from "./routes/inquiryRoutes.js";
 import reviewRoutes from "./routes/reviewRoutes.js";
 import showcaseProjectRoutes from "./routes/showcaseProjectRoutes.js";
+import careerRoutes from "./routes/careerRoutes.js";
 
 
 const app = express();
@@ -60,5 +61,6 @@ app.use(
 app.use("/api/inquiries", inquiryRoutes);
 app.use("/api/reviews", reviewRoutes);
 app.use("/api/showcase-projects", showcaseProjectRoutes);
+app.use("/api/careers", careerRoutes);
 
 export default app;

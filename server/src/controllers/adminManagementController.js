@@ -139,7 +139,7 @@ export const disableAdminUser = async (req, res) => {
     const admin = await User.findOneAndUpdate(
       { _id: req.params.id, role: "admin" },
       { isActive: false },
-      { new: true }
+      { returnDocument: "after" }
     ).select(adminFields);
 
     if (!admin) {
@@ -176,7 +176,7 @@ export const enableAdminUser = async (req, res) => {
     const admin = await User.findOneAndUpdate(
       { _id: req.params.id, role: "admin" },
       { isActive: true },
-      { new: true }
+      { returnDocument: "after" }
     ).select(adminFields);
 
     if (!admin) {

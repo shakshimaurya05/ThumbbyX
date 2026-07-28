@@ -57,6 +57,9 @@ import EditProfile from "./pages/contractor/EditProfile";
 import ShowcaseProjectsPage from "./pages/admin/ShowcaseProjectsPage";
 import AdminManagementPage from "./pages/admin/AdminManagementPage";
 import ActivityLogsPage from "./pages/admin/ActivityLogsPage";
+import Careers from "./pages/Careers";
+import HiringPage from "./pages/admin/HiringPage";
+import JobApplicantsPage from "./pages/admin/JobApplicantsPage";
 import { useAuth } from "./contexts/AuthContext";
 import { dashboardPathForRole, isAdminRole, isSuperAdmin } from "./utils/roles";
 
@@ -115,6 +118,7 @@ function App() {
         <Route path="/contractors" element={<FindContractors />} />
         <Route path="/projects" element={<Projects />} />
         <Route path="/join-us" element={<JoinUs />} />
+        <Route path="/careers" element={<Careers />} />
         <Route path="/about-us" element={<AboutUs />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/cost-estimator" element={<CostEstimator />} />
@@ -208,6 +212,8 @@ function App() {
   path="/admin/inquiries"
   element={<AdminRoute><InquiriesPage /></AdminRoute>}
 />
+<Route path="/admin/hiring" element={<AdminRoute><HiringPage /></AdminRoute>} />
+<Route path="/admin/job-applicants" element={<AdminRoute><JobApplicantsPage /></AdminRoute>} />
 <Route
   path="/contractor/my-projects"
   element={<ContractorRoute><MyProjectsPage /></ContractorRoute>}

@@ -6,6 +6,7 @@ import {
 import { toast } from "react-toastify";
 import {
   ArrowRight,
+  BriefcaseBusiness,
   ChevronDown,
   ClipboardList,
   Heart,
@@ -64,6 +65,12 @@ const moreLinks = [
     label: "Join Us",
     sub: "Partner with ThumbbyX.",
     href: "/join-us",
+  },
+  {
+    icon: BriefcaseBusiness,
+    label: "Careers",
+    sub: "Grow with ThumbbyX.",
+    href: "/careers",
   },
 ];
 
