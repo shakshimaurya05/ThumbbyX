@@ -1,12 +1,14 @@
 import { useEffect, useMemo, useState } from "react";
 import axios from "axios";
-import { BriefcaseBusiness, CheckCircle2, Clock3, MapPin, Search, Send, Users, X } from "lucide-react";
+import { BriefcaseBusiness, CalendarDays, ChevronDown, ChevronUp, CheckCircle2, Clock3, GraduationCap, ListChecks, MapPin, Search, Send, Users, Wrench, X } from "lucide-react";
 import { toast } from "react-toastify";
 import Navbar from "../components/layout/Navbar";
 import Footer from "../components/layout/Footer";
 import { API_BASE_URL } from "../services/api";
 
 const blankApplication = { fullName: "", email: "", phone: "", coverLetter: "", resume: null };
+
+const detailText = (value, fallback = "Not specified") => value?.trim() || fallback;
 
 export default function Careers() {
   const [careers, setCareers] = useState([]);
@@ -15,6 +17,7 @@ export default function Careers() {
   const [type, setType] = useState("");
   const [mode, setMode] = useState("");
   const [department, setDepartment] = useState("");
+  const [expandedJobs, setExpandedJobs] = useState(new Set());
   const [job, setJob] = useState(null);
   const [application, setApplication] = useState(blankApplication);
   const [submitting, setSubmitting] = useState(false);
@@ -121,9 +124,16 @@ export default function Careers() {
             }
           </select>
         </div>
-        <div className="mt-7 grid gap-5 md:grid-cols-2">
-          {!loading && filtered.map((item) => <article key={item._id} className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
-            <div className="flex justify-between gap-4">
+        <div className="mt-7 grid gap-5">
+          {!loading && filtered.map((item) => {
+            const expanded = expandedJobs.has(item._id);
+            const toggleDetails = () => setExpandedJobs((current) => {
+              const next = new Set(current);
+              expanded ? next.delete(item._id) : next.add(item._id);
+              return next;
+            });
+            return <article key={item._id} className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
+            <div className="flex flex-wrap justify-between gap-4">
               <div>
                 <p className="text-xs font-bold uppercase tracking-wider text-indigo-600">{item.department}</p>
                 <h3 className="mt-2 text-xl font-black text-blue-950">{item.title}</h3>
@@ -136,21 +146,43 @@ export default function Careers() {
               <span className="rounded-full bg-slate-100 px-3 py-1">{item.workMode}</span>
               <span className="inline-flex items-center gap-1 rounded-full bg-slate-100 px-3 py-1"><MapPin size={12} />{item.location}</span>
             </div>
-            <p className="mt-4 text-sm leading-6 text-slate-600">{item.description}</p>
-            <div className="mt-5 grid grid-cols-2 gap-3 text-xs text-slate-500">
-              <span>Experience: <b className="text-slate-700">{item.experience}</b>
-              </span>
-              <span>Salary: <b className="text-slate-700">{item.salary || "Discussed on application"}</b>
-              </span>
-              <span>Openings: <b className="text-slate-700">{item.openings}</b></span>{item.duration && <span>Duration: <b className="text-slate-700">{item.duration}</b></span>
-              }
+            <p className={`mt-4 text-sm leading-6 text-slate-600 ${expanded ? "" : "line-clamp-2"}`}>{item.description}</p>
+            {expanded && <>
+            <div className="mt-5 grid gap-3 rounded-xl bg-slate-50 p-4 text-sm sm:grid-cols-2 lg:grid-cols-4">
+              <div><span className="text-xs font-bold uppercase tracking-wide text-slate-400">Experience</span><p className="mt-1 font-semibold text-slate-700">{item.experience}</p></div>
+              <div><span className="text-xs font-bold uppercase tracking-wide text-slate-400">Salary</span><p className="mt-1 font-semibold text-slate-700">{item.salary || "Discussed on application"}</p></div>
+              <div><span className="text-xs font-bold uppercase tracking-wide text-slate-400">Openings</span><p className="mt-1 font-semibold text-slate-700">{item.openings}</p></div>
+              <div><span className="text-xs font-bold uppercase tracking-wide text-slate-400">Duration</span><p className="mt-1 font-semibold text-slate-700">{item.duration || "Not applicable"}</p></div>
             </div>
-            <div className="mt-5 flex items-center justify-between border-t pt-4">
-              <span className="text-xs text-slate-400">Posted {new Date(item.createdAt).toLocaleDateString()}</span>
-              <button onClick={() => setJob(item)} className="bg-brand-button-gradient inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-bold text-white transition hover:-translate-y-0.5"><Send size={14} />Apply now</button>
+            <div className="mt-5 grid gap-3 border-t border-slate-100 pt-5 lg:grid-cols-3">
+              <div className="rounded-xl border border-indigo-100 bg-indigo-50/60 p-4">
+                <p className="flex items-center gap-2 text-sm font-extrabold text-blue-950"><Wrench size={16} className="text-indigo-600" />Required skills</p>
+                <div className="mt-3 flex flex-wrap gap-2">
+                  {(item.skills?.length ? item.skills : ["Not specified"]).map((skill) => <span key={skill} className="rounded-full bg-white px-2.5 py-1 text-xs font-semibold text-indigo-700 ring-1 ring-indigo-100">{skill}</span>)}
+                </div>
+              </div>
+              <div className="rounded-xl border border-slate-200 p-4">
+                <p className="flex items-center gap-2 text-sm font-extrabold text-blue-950"><ListChecks size={16} className="text-indigo-600" />Responsibilities</p>
+                <p className="mt-3 whitespace-pre-line text-sm leading-6 text-slate-600">{detailText(item.responsibilities)}</p>
+              </div>
+              <div className="rounded-xl border border-slate-200 p-4">
+                <p className="flex items-center gap-2 text-sm font-extrabold text-blue-950"><GraduationCap size={16} className="text-indigo-600" />Qualifications</p>
+                <p className="mt-3 whitespace-pre-line text-sm leading-6 text-slate-600">{detailText(item.qualifications)}</p>
+              </div>
+            </div>
+            </>}
+            <div className="mt-5 flex flex-wrap items-center justify-between gap-3 border-t pt-4">
+              <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-slate-500">
+                <span>Posted {new Date(item.createdAt).toLocaleDateString()}</span>
+                {expanded && <span className="inline-flex items-center gap-1 font-semibold text-rose-600"><CalendarDays size={14} />Last date: {item.lastDateToApply ? new Date(item.lastDateToApply).toLocaleDateString() : "Open until filled"}</span>}
+              </div>
+              <div className="flex items-center gap-3">
+                <button type="button" onClick={toggleDetails} aria-expanded={expanded} className="inline-flex items-center gap-1 text-sm font-bold text-indigo-600 hover:text-indigo-800">{expanded ? "Show less" : "Read more"}{expanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}</button>
+                <button onClick={() => setJob(item)} className="bg-brand-button-gradient inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-bold text-white transition hover:-translate-y-0.5"><Send size={14} />Apply now</button>
+              </div>
             </div>
           </article>
-          )}
+          })}
           {!loading && !filtered.length &&
             <p className="col-span-full rounded-2xl border border-dashed border-slate-300 py-12 text-center text-slate-500">No openings match your search right now.</p>
           }

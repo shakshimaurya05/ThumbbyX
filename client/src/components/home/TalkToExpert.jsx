@@ -155,7 +155,7 @@ const TalkToExpert = () => {
                 src={expertImage}
                 alt="Construction Expert"
                 loading="eager"
-                fetchpriority="high"
+                fetchPriority="high"
                 decoding="async"
                 className="rounded-[32px] w-full object-cover"
                 style={{
